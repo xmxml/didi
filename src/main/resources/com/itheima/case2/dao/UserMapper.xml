@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+映射文件
+namespace 指定接口的类全名
+-->
+<mapper namespace="com.itheima.case2.dao.UserMapper">
+    <!--
+        1.id="findAllUsersByPageMap" : 表示唯一标识，通过属性值关联下面的select标签
+        2.type="user":接口中关联方法的返回值类型，是容器中的泛型类型
+        3.autoMapping="true"：如果实体类和数据表的字段名一致那么会自动映射
+    -->
+    <resultMap id="findAllUsersByPageMap" type="user" autoMapping="true">
+        <!--配置t_user表和User实体类中的主键映射关系、
+            4.<id column="id" property="id"/> :column表示数据表的字段名 property 表示实体类中的成员变量名
+        -->
+        <id column="id" property="id"/>
+        <!--
+            在mybatis中没有多对多，配置一对多，一个用户对应多个角色，使用的标签是collection
+                5.ofType="role"表示List集合中保存的实体类类型
+                6.autoMapping="true"：如果实体类和数据表的字段名一致那么会自动映射
+                7.property="roles":表示在User实体类集合容器对象名是roles
+        -->
+        <collection property="roles" javaType="list" autoMapping="true" ofType="role">
+            <!--
+                8.配置t_role表和实体类Role之间主键的映射关系:
+                    1)column="rid" 表示数据表的字段名
+                    2)property="id" 表示Role实体类的成员变量名
+            -->
+            <id column="rid" property="id"/>
+        </collection>
+    </resultMap>
+
+    <!--
+    查询语句
+    id: 接口中方法的名字 findAllUsersByPage
+    resultMap：如果是多表查询这里使用resultMap，然后创建resultMap标签，通过resultMap的属性值findAllUsersByPageMap进行关联
+    List<User> findAllUsersByPage(int startIndex, int pageSize);
+    -->
+    <select id="findAllUsersByPage" resultMap="findAllUsersByPageMap">
+        select u.*,r.id rid,r.name from
+                (select * from t_user limit #{startIndex},#{pageSize}) u
+                    inner join t_user_role ur
+                    inner join t_role r
+                               on u.id = ur.user_id and
+                                  ur.role_id = r.id
+    </select>
+</mapper>
