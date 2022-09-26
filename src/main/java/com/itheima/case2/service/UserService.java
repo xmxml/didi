@@ -3,13 +3,12 @@ package com.itheima.case2.service;
 import com.itheima.case2.dao.UserMapper;
 import com.itheima.case2.pojo.po.User;
 import com.itheima.case2.pojo.vo.PageResult;
-import com.itheima.case2.pojo.vo.QueryPageBean;
 import com.itheima.case2.utils.SqlSessionUtil;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;
 
-public class Userservice {
+public class UserService {
     /*
     public PageResult selectByPage(QueryPageBean queryPageBean){
         SqlSession session = SqlSessionUtil.getSession();

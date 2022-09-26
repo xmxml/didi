@@ -1,9 +1,8 @@
 package com.itheima.case2.web;
 
-import com.alibaba.fastjson.JSON;
 import com.itheima.case2.pojo.vo.PageResult;
 import com.itheima.case2.pojo.vo.Result;
-import com.itheima.case2.service.Userservice;
+import com.itheima.case2.service.UserService;
 import com.itheima.case2.utils.BaseController;
 
 import javax.servlet.ServletException;
@@ -54,7 +53,7 @@ public class User1Servlet extends Base13Servlet {
             System.out.println(parameter);
             int i = Integer.parseInt(parameter);
             int i1 = Integer.parseInt(parameter1);
-            Userservice userservice = new Userservice();
+            UserService userservice = new UserService();
             PageResult allByPage = userservice.findAllByPage(i, i1);
             Result result = new Result(true, "成功", allByPage);
             BaseController.printResult(resp,result);
